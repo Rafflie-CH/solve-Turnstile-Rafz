@@ -1,10 +1,15 @@
 const axios = require('axios');
 
 module.exports = async (req, res) => {
-    const { apikey, sitekey, url } = req.query;
+    const apikey = (req.query.apikey || '').trim();
+    const sitekey = (req.query.sitekey || '').trim();
+    const url = (req.query.url || '').trim();
 
     if (!apikey || !sitekey || !url) {
-        return res.status(400).json({ status: false, message: 'Parameter apikey, sitekey, dan url wajib diisi' });
+        return res.status(400).json({ 
+            status: false, 
+            message: 'Parameter apikey, sitekey, dan url wajib diisi di URL' 
+        });
     }
 
     try {
@@ -18,7 +23,10 @@ module.exports = async (req, res) => {
         });
 
         if (createResp.data.errorId !== 0) {
-            return res.json({ status: false, message: createResp.data.errorDescription });
+            return res.json({ 
+                status: false, 
+                message: createResp.data.errorDescription || 'Error dari 2Captcha' 
+            });
         }
 
         const taskId = createResp.data.taskId;
@@ -30,7 +38,7 @@ module.exports = async (req, res) => {
             });
 
             if (statusResp.data.status === 'processing') {
-                await new Promise(r => setTimeout(r, 5000));
+                await new Promise(r => setTimeout(r, 3000));
                 return poll();
             }
             return statusResp.data;
