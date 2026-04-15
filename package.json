@@ -1,7 +1,9 @@
 {
-  "name": "vercel-turnstile-solver",
+  "name": "vercel-nopecha-solver",
   "version": "1.0.0",
+  "description": "Solve Cloudflare Turnstile using NopeCHA (free 100/day)",
+  "main": "api/solve.js",
   "dependencies": {
-    "axios": "^1.6.0"
+    "axios": "^1.6.2"
   }
 }
